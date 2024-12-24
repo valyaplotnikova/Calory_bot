@@ -5,7 +5,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from aiogram.types import Message
 
-api = '7115803232:AAF67W6cAht1Gh_od5sg-CTN9un2ZABDqJ4'
+api = ''
 
 storage = MemoryStorage()
 bot = Bot(token=api)
