@@ -3,7 +3,7 @@ from aiogram.filters import CommandStart, StateFilter
 from aiogram.fsm.state import StatesGroup, State, default_state
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from aiogram.types import Message
+from aiogram.types import Message, KeyboardButton, ReplyKeyboardMarkup
 
 api = '7115803232:AAF67W6cAht1Gh_od5sg-CTN9un2ZABDqJ4'
 
@@ -11,6 +11,15 @@ storage = MemoryStorage()
 bot = Bot(token=api)
 
 dp = Dispatcher(storage=storage)
+
+button_1 = KeyboardButton(text='Расчитать')
+button_2 = KeyboardButton(text='Информация')
+
+my_keyboard = ReplyKeyboardMarkup(
+    keyboard=[[button_1, button_2,]],
+    resize_keyboard=True,
+    one_time_keyboard=True
+)
 
 
 # Класс состояний
@@ -23,11 +32,13 @@ class UserState(StatesGroup):
 # Этот хэндлер будет срабатывать на команду "/start"
 @dp.message(CommandStart(), StateFilter(default_state))
 async def start(message: Message):
-    await message.answer('Привет!\nЯ бот помогающий твоему здоровью.'
-                         '\n Введите "Calories" для расчета Вашей нормы потребления калорий')
+    await message.answer(text='Привет!\nЯ бот помогающий твоему здоровью.'
+                         '\n Введите "Calories" для расчета Вашей нормы потребления калорий',
+                         reply_markup=my_keyboard
+                         )
 
 
-@dp.message(F.text.lower().in_('calories'), StateFilter(default_state))
+@dp.message(F.text.lower().in_('расчитать'), StateFilter(default_state))
 async def set_age(message: Message, state: UserState):
     await message.answer('Введите свой возраст:')
     await state.set_state(UserState.age)  # Устанавливаем состояние age
