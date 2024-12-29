@@ -27,7 +27,8 @@ inline_button_2 = InlineKeyboardButton(text='Формулы расчёта', cal
 kb = InlineKeyboardMarkup(
     inline_keyboard=[
         [inline_button_1, inline_button_2]
-    ]
+    ],
+    resize_keyboard=True,
 )
 
 
