@@ -22,3 +22,15 @@ kb = InlineKeyboardMarkup(
     resize_keyboard=True,
 )
 
+
+product_button_1 = InlineKeyboardButton(text='Ежедневник1', callback_data='product_buying')
+product_button_2 = InlineKeyboardButton(text='Ежедневник2', callback_data='product_buying')
+product_button_3 = InlineKeyboardButton(text='Ежедневник3', callback_data='product_buying')
+product_button_4 = InlineKeyboardButton(text='Ежедневник4', callback_data='product_buying')
+
+product_kb = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [product_button_1, product_button_2, product_button_3, product_button_4]
+    ],
+    resize_keyboard=True,
+)

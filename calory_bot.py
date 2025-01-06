@@ -5,7 +5,7 @@ from aiogram.filters import CommandStart, StateFilter
 from aiogram.fsm.state import StatesGroup, State, default_state
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from aiogram.types import Message
+from aiogram.types import Message, FSInputFile
 
 from keyboards import *
 from dotenv import load_dotenv
@@ -45,6 +45,32 @@ async def main_menu(message):
     )
 
 
+@dp.message(F.text.lower().in_('купить'))
+async def get_buying_list(message):
+    try:
+        for i in range(1, 5):
+            file_path = f'images/{i}.jpg'
+            if os.path.exists(file_path):
+                photo = FSInputFile(file_path)
+                await message.answer_photo(photo)
+                await message.answer(text=f'Название: Ежедневник{i} | Описание: описание {i} | Цена: {i*100}')
+            else:
+                await message.answer(f'Файл {file_path} не найден.')  # Сообщаем, если файл не найден
+
+        await message.answer(
+            text='Выберите продукт:',
+            reply_markup=product_kb
+        )
+    except Exception as e:
+        await message.answer(f'Произошла ошибка: {str(e)}')
+
+
+@dp.callback_query(F.data.lower().in_('product_buying'))
+async def send_confirm_message(call):
+    await call.message.answer('Вы успешно приобрели продукт!')
+    await call.answer()
+
+
 @dp.callback_query(F.data.lower().in_('formulas'))
 async def get_formulas(call):
     await call.message.answer('BMR = 10 * вес + 6.25 * рост - 5 * возраст + 5')
@@ -62,6 +88,8 @@ async def set_growth(message: Message, state: UserState.age):
     await state.update_data(age=message.text)
     await message.answer('Введите свой рост:')
     await state.set_state(UserState.growth)  # Устанавливаем состояние growth
+
+
 
 
 @dp.message(StateFilter(UserState.growth))
@@ -94,6 +122,7 @@ async def send_calories(message: Message, state: UserState.weight):
 @dp.message()
 async def all_massages(message: Message):
     await message.answer('Введите команду /start, чтобы начать общение')
+
 
 
 if __name__ == '__main__':
