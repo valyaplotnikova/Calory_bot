@@ -1,34 +1,24 @@
+import os
+
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart, StateFilter
 from aiogram.fsm.state import StatesGroup, State, default_state
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from aiogram.types import Message, KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import Message
 
-api = '7115803232:AAF67W6cAht1Gh_od5sg-CTN9un2ZABDqJ4'
+from keyboards import *
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+api = os.getenv('API')
 
 storage = MemoryStorage()
 bot = Bot(token=api)
 
 dp = Dispatcher(storage=storage)
-
-button_1 = KeyboardButton(text='Расчитать')
-button_2 = KeyboardButton(text='Информация')
-
-my_keyboard = ReplyKeyboardMarkup(
-    keyboard=[[button_1, button_2,]],
-    resize_keyboard=True,
-    one_time_keyboard=True
-)
-
-inline_button_1 = InlineKeyboardButton(text='Рассчитать норму калорий', callback_data='calories')
-inline_button_2 = InlineKeyboardButton(text='Формулы расчёта', callback_data='formulas')
-
-kb = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [inline_button_1, inline_button_2]
-    ]
-)
 
 
 # Класс состояний
