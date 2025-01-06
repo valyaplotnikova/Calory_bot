@@ -4,11 +4,11 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart, StateFilter
 from aiogram.fsm.state import StatesGroup, State, default_state
 from aiogram.fsm.storage.memory import MemoryStorage
-
 from aiogram.types import Message, FSInputFile
+from dotenv import load_dotenv
 
 from keyboards import *
-from dotenv import load_dotenv
+from crud_functions import *
 
 
 load_dotenv()
@@ -19,7 +19,9 @@ storage = MemoryStorage()
 bot = Bot(token=api)
 
 dp = Dispatcher(storage=storage)
-
+initiate_db()
+drop_db()
+complete_db()
 
 # Класс состояний
 class UserState(StatesGroup):
@@ -47,13 +49,14 @@ async def main_menu(message):
 
 @dp.message(F.text.lower().in_('купить'))
 async def get_buying_list(message):
+    result = get_all_products()
     try:
-        for i in range(1, 5):
-            file_path = f'images/{i}.jpg'
+        for res in result:
+            file_path = f'images/{res[0]}.jpg'
             if os.path.exists(file_path):
                 photo = FSInputFile(file_path)
                 await message.answer_photo(photo)
-                await message.answer(text=f'Название: Ежедневник{i} | Описание: описание {i} | Цена: {i*100}')
+                await message.answer(text=f'Название: {res[1]} | Описание: {res[2]} | Цена: {res[-1]}')
             else:
                 await message.answer(f'Файл {file_path} не найден.')  # Сообщаем, если файл не найден
 
