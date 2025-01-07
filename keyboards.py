@@ -3,11 +3,13 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardBut
 
 button_1 = KeyboardButton(text='Расчитать')
 button_2 = KeyboardButton(text='Информация')
-button_3 = KeyboardButton(text='Купить')
+button_3 = KeyboardButton(text='Регистрация')
+button_4 = KeyboardButton(text='Купить')
 
 my_keyboard = ReplyKeyboardMarkup(
     keyboard=[[button_1, button_2],
-              [button_3]],
+              [button_3],
+              [button_4]],
     resize_keyboard=True,
     one_time_keyboard=True
 )
