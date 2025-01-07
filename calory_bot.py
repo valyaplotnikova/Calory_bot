@@ -255,11 +255,9 @@ async def send_calories(message: Message, state: UserState.weight):
     calories = 10 * weight + 6.25 * growth - 5 * age + 5
 
     await message.answer(f"Ваша норма калорий: {calories:.2f} ккал.")
-    await state.clear()  # Завершаем состояние
+    await state.clear()
 
 
-# Этот хэндлер будет срабатывать на любые текстовые сообщения,
-# кроме команд "/start"
 @dp.message()
 async def all_massages(message: Message):
     """
